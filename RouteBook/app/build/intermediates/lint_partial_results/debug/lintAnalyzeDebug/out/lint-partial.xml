@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.13.2" type="partial_results">
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.routebook.MainActivity"
+                    boolean="true"/>
+            </map>
+    </map>
+    <map id="UnusedResources">
+        <location id="R.color.black"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="7"
+            column="12"
+            startOffset="241"
+            endLine="7"
+            endColumn="24"
+            endOffset="253"/>
+        <location id="R.color.purple_500"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="3"
+            column="12"
+            startOffset="64"
+            endLine="3"
+            endColumn="29"
+            endOffset="81"/>
+        <location id="R.color.purple_700"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="4"
+            column="12"
+            startOffset="110"
+            endLine="4"
+            endColumn="29"
+            endOffset="127"/>
+        <location id="R.color.teal_200"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="5"
+            column="12"
+            startOffset="156"
+            endLine="5"
+            endColumn="27"
+            endOffset="171"/>
+        <location id="R.color.white"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="6"
+            column="12"
+            startOffset="200"
+            endLine="6"
+            endColumn="24"
+            endOffset="212"/>
+        <location id="R.drawable.topbarbg"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/topbarbg.png"/>
+        <location id="R.string.app_name"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="3"
+            column="13"
+            startOffset="65"
+            endLine="3"
+            endColumn="28"
+            endOffset="80"/>
+        <entry
+            name="model"
+            string="color[purple_500(D),purple_700(D),teal_200(D),white(D),black(D)],drawable[topbarbg(D)],mipmap[ic_launcher(U),ic_launcher_round(U)],string[app_name(D)],style[Theme_RouteBook(U),Theme_Material3_DayNight_NoActionBar(R)];9^a;;;"/>
+    </map>
+
+</incidents>

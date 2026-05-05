@@ -1,6 +1,9 @@
 
 package com.routebook
 import androidx.compose.material.icons.filled.Search
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.DrawerValue
@@ -37,6 +40,34 @@ data class Stop(val name: String, val address: String, val note: String)
 data class City(val name: String, val stops: List<Stop>)
 
 class MainActivity : ComponentActivity() {
+
+        private val jsonFileName = "routebook_data.json"
+        private val gson = Gson()
+
+        private fun getJsonFile(): File = File(filesDir, jsonFileName)
+
+        private fun saveCitiesToJson(cities: List<City>) {
+            try {
+                val json = gson.toJson(cities)
+                getJsonFile().writeText(json)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        private fun loadCitiesFromJson(): List<City>? {
+            return try {
+                val file = getJsonFile()
+                if (file.exists()) {
+                    val json = file.readText()
+                    val type = object : TypeToken<List<City>>() {}.type
+                    gson.fromJson<List<City>>(json, type)
+                } else null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     private lateinit var importLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>
     private lateinit var exportLauncher: androidx.activity.result.ActivityResultLauncher<String>
 
@@ -77,6 +108,7 @@ class MainActivity : ComponentActivity() {
                             }
                             val newCities = cityMap.map { City(it.key, it.value) }
                             citiesState?.value = newCities
+                            saveCitiesToJson(newCities)
                         } else {
                             android.widget.Toast.makeText(context, "CSV file is empty.", android.widget.Toast.LENGTH_LONG).show()
                         }
@@ -89,12 +121,7 @@ class MainActivity : ComponentActivity() {
         exportLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")) { uri ->
             if (uri != null) {
                 try {
-                    val cities = (this@MainActivity as? MainActivity)?.let { activity ->
-                        val field = activity::class.java.getDeclaredField("citiesState")
-                        field.isAccessible = true
-                        @Suppress("UNCHECKED_CAST")
-                        (field.get(activity) as? MutableState<List<City>>)?.value
-                    } ?: return@registerForActivityResult
+                    val cities = citiesState?.value ?: return@registerForActivityResult
                     val csvHeader = "City,StopName,StopAddress,Note\n"
                     val csvRows = cities.flatMap { city ->
                         city.stops.map { stop ->
@@ -122,8 +149,13 @@ class MainActivity : ComponentActivity() {
             RouteBookTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     var navState by remember { mutableStateOf<NavState>(NavState.Home) }
-                    val cities = remember { mutableStateOf(sampleCities()) }
+                    val loadedCities = loadCitiesFromJson() ?: sampleCities()
+                    val cities = remember { mutableStateOf(loadedCities) }
                     citiesState = cities
+                    fun updateCities(newCities: List<City>) {
+                        cities.value = newCities
+                        saveCitiesToJson(newCities)
+                    }
                     when (val state = navState) {
                         is NavState.Home -> HomeScreen(
                             cities = cities.value,
@@ -135,7 +167,7 @@ class MainActivity : ComponentActivity() {
                             city = state.city,
                             onBack = { navState = NavState.Home },
                             cities = cities.value,
-                            setCities = { cities.value = it }
+                            setCities = { updateCities(it) }
                         )
                     }
                 }
