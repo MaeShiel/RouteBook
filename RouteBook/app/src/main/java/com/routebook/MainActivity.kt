@@ -44,39 +44,77 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         var citiesState: MutableState<List<City>>? = null
+        val context = this
 
         importLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
             if (uri != null) {
-                contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
-                    val lines = reader.readLines()
-                    if (lines.isNotEmpty()) {
-                        val header = lines[0].split(",")
-                        val cityIdx = header.indexOf("City")
-                        val stopNameIdx = header.indexOf("StopName")
-                        val stopAddressIdx = header.indexOf("StopAddress")
-                        val noteIdx = header.indexOf("Note")
-                        val cityMap = mutableMapOf<String, MutableList<Stop>>()
-                        for (line in lines.drop(1)) {
-                            val cols = parseCsvLine(line)
-                            if (cols.size > maxOf(cityIdx, stopNameIdx, stopAddressIdx, noteIdx)) {
-                                val city = cols[cityIdx]
-                                val stop = Stop(
-                                    name = cols[stopNameIdx],
-                                    address = cols[stopAddressIdx],
-                                    note = if (noteIdx >= 0 && noteIdx < cols.size) cols[noteIdx] else ""
-                                )
-                                cityMap.getOrPut(city) { mutableListOf() }.add(stop)
+                try {
+                    contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
+                        val lines = reader.readLines()
+                        if (lines.isNotEmpty()) {
+                            val header = lines[0].split(",")
+                            val cityIdx = header.indexOf("City")
+                            val stopNameIdx = header.indexOf("StopName")
+                            val stopAddressIdx = header.indexOf("StopAddress")
+                            val noteIdx = header.indexOf("Note")
+                            // Check for required columns
+                            if (cityIdx == -1 || stopNameIdx == -1 || stopAddressIdx == -1) {
+                                android.widget.Toast.makeText(context, "CSV missing required columns.", android.widget.Toast.LENGTH_LONG).show()
+                                return@use
                             }
+                            val cityMap = mutableMapOf<String, MutableList<Stop>>()
+                            for (line in lines.drop(1)) {
+                                val cols = parseCsvLine(line)
+                                if (cols.size > maxOf(cityIdx, stopNameIdx, stopAddressIdx)) {
+                                    val city = cols[cityIdx]
+                                    val stop = Stop(
+                                        name = cols[stopNameIdx],
+                                        address = cols[stopAddressIdx],
+                                        note = if (noteIdx >= 0 && noteIdx < cols.size) cols[noteIdx] else ""
+                                    )
+                                    cityMap.getOrPut(city) { mutableListOf() }.add(stop)
+                                } // else skip malformed row
+                            }
+                            val newCities = cityMap.map { City(it.key, it.value) }
+                            citiesState?.value = newCities
+                        } else {
+                            android.widget.Toast.makeText(context, "CSV file is empty.", android.widget.Toast.LENGTH_LONG).show()
                         }
-                        val newCities = cityMap.map { City(it.key, it.value) }
-                        citiesState?.value = newCities
                     }
+                } catch (e: Exception) {
+                    android.widget.Toast.makeText(context, "Failed to import CSV: ${e.localizedMessage}", android.widget.Toast.LENGTH_LONG).show()
                 }
             }
         }
         exportLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")) { uri ->
             if (uri != null) {
-                // TODO: Handle CSV export to uri (update to new format)
+                try {
+                    val cities = (this@MainActivity as? MainActivity)?.let { activity ->
+                        val field = activity::class.java.getDeclaredField("citiesState")
+                        field.isAccessible = true
+                        @Suppress("UNCHECKED_CAST")
+                        (field.get(activity) as? MutableState<List<City>>)?.value
+                    } ?: return@registerForActivityResult
+                    val csvHeader = "City,StopName,StopAddress,Note\n"
+                    val csvRows = cities.flatMap { city ->
+                        city.stops.map { stop ->
+                            "${city.name},${stop.name},${stop.address},${stop.note}"
+                        }
+                    }
+                    val csvContent = buildString {
+                        append(csvHeader)
+                        csvRows.forEach {
+                            append(it)
+                            append("\n")
+                        }
+                    }
+                    contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                        writer.write(csvContent)
+                    }
+                    android.widget.Toast.makeText(this, "Export successful!", android.widget.Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    android.widget.Toast.makeText(this, "Export failed: ${e.localizedMessage}", android.widget.Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -95,7 +133,9 @@ class MainActivity : ComponentActivity() {
                         )
                         is NavState.Stops -> StopsScreen(
                             city = state.city,
-                            onBack = { navState = NavState.Home }
+                            onBack = { navState = NavState.Home },
+                            cities = cities.value,
+                            setCities = { cities.value = it }
                         )
                     }
                 }
@@ -273,10 +313,21 @@ fun AboutDialog(onDismiss: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StopsScreen(city: City, onBack: () -> Unit) {
+fun StopsScreen(
+    city: City,
+    onBack: () -> Unit,
+    cities: List<City>,
+    setCities: (List<City>) -> Unit
+) {
     val context = LocalContext.current
     var searchQuery by remember { mutableStateOf("") }
-    val filteredStops = city.stops.filter {
+    val cityIndex = cities.indexOfFirst { it.name == city.name }
+    var stops by remember { mutableStateOf(city.stops.toMutableList()) }
+    var showAddDialog by remember { mutableStateOf(false) }
+    var newStopName by remember { mutableStateOf("") }
+    var newStopAddress by remember { mutableStateOf("") }
+    var newStopNote by remember { mutableStateOf("") }
+    val filteredStops = stops.filter {
         it.name.contains(searchQuery, ignoreCase = true) ||
         it.address.contains(searchQuery, ignoreCase = true) ||
         it.note.contains(searchQuery, ignoreCase = true)
@@ -285,13 +336,17 @@ fun StopsScreen(city: City, onBack: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = { Text(city.name, style = MaterialTheme.typography.titleLarge) },
-                navigationIcon = {}, // No hamburger menu
+                navigationIcon = {
+                    Row {
+                        IconButton(onClick = { showAddDialog = true }) {
+                            Icon(Icons.Default.Add, contentDescription = "Add Stop")
+                        }
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    }
+                },
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onBack, containerColor = MaterialTheme.colorScheme.primary) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-            }
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -310,41 +365,117 @@ fun StopsScreen(city: City, onBack: () -> Unit) {
                 singleLine = true,
                 shape = MaterialTheme.shapes.medium
             )
-            // ...existing code...
-            filteredStops.forEach { stop ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    shape = MaterialTheme.shapes.medium,
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Row(
+            androidx.compose.foundation.lazy.LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(filteredStops.size) { index ->
+                    val stop = filteredStops[index]
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .padding(vertical = 4.dp),
+                        shape = MaterialTheme.shapes.medium,
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
-                        Column {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
                             Text(stop.name, style = MaterialTheme.typography.bodyLarge)
                             Text(stop.address, style = MaterialTheme.typography.bodySmall)
                             if (stop.note.isNotBlank()) {
                                 Text(stop.note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.secondary)
                             }
-                        }
-                        OutlinedButton(
-                            onClick = {
-                                val gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(stop.address))
-                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                                mapIntent.setPackage("com.google.android.apps.maps")
-                                context.startActivity(mapIntent)
-                            },
-                            shape = MaterialTheme.shapes.small
-                        ) {
-                            Text("Navigate")
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                OutlinedButton(
+                                    onClick = {
+                                        val gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(stop.address))
+                                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                        mapIntent.setPackage("com.google.android.apps.maps")
+                                        context.startActivity(mapIntent)
+                                    },
+                                    shape = MaterialTheme.shapes.small
+                                ) {
+                                    Text("Navigate")
+                                }
+                                OutlinedButton(
+                                    onClick = {
+                                        // Remove stop from list and update state
+                                        val stopIndex = stops.indexOf(stop)
+                                        if (stopIndex >= 0) {
+                                            val newStops = stops.toMutableList().apply { removeAt(stopIndex) }
+                                            stops = newStops
+                                            if (cityIndex >= 0) {
+                                                val updatedCities = cities.toMutableList()
+                                                val updatedCity = city.copy(stops = newStops)
+                                                updatedCities[cityIndex] = updatedCity
+                                                setCities(updatedCities)
+                                            }
+                                        }
+                                    },
+                                    shape = MaterialTheme.shapes.small
+                                ) {
+                                    Text("Delete")
+                                }
+                            }
                         }
                     }
                 }
+            }
+            if (showAddDialog) {
+                AlertDialog(
+                    onDismissRequest = { showAddDialog = false },
+                    title = { Text("Add Stop") },
+                    text = {
+                        Column {
+                            OutlinedTextField(
+                                value = newStopName,
+                                onValueChange = { newStopName = it },
+                                label = { Text("Stop Name") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = newStopAddress,
+                                onValueChange = { newStopAddress = it },
+                                label = { Text("Stop Address") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = newStopNote,
+                                onValueChange = { newStopNote = it },
+                                label = { Text("Notes") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            if (newStopName.isNotBlank() && newStopAddress.isNotBlank()) {
+                                val newStop = Stop(newStopName, newStopAddress, newStopNote)
+                                stops = (stops + newStop).toMutableList()
+                                // Update global state
+                                if (cityIndex >= 0) {
+                                    val updatedCities = cities.toMutableList()
+                                    val updatedCity = city.copy(stops = stops)
+                                    updatedCities[cityIndex] = updatedCity
+                                    setCities(updatedCities)
+                                }
+                                newStopName = ""
+                                newStopAddress = ""
+                                newStopNote = ""
+                                showAddDialog = false
+                            }
+                        }) { Text("Add") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showAddDialog = false }) { Text("Cancel") }
+                    }
+                )
             }
         }
     }
