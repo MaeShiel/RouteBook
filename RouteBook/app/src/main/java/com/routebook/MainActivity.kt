@@ -243,9 +243,12 @@ fun HomeScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "RouteBook",
-                            style = MaterialTheme.typography.displayLarge,
-                            color = MaterialTheme.colorScheme.primary
+                            text = "RouteBook",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1,
+                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                            modifier = Modifier.fillMaxWidth(0.7f)
                         )
                     },
                     navigationIcon = {
