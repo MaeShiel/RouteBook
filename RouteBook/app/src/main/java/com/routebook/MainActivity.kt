@@ -1,4 +1,13 @@
+
 package com.routebook
+import androidx.compose.material.icons.filled.Search
+
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.rememberDrawerState
+import kotlinx.coroutines.launch
 
 import android.content.Intent
 import android.net.Uri
@@ -132,90 +141,146 @@ fun HomeScreen(
     onImportClick: () -> Unit = {},
     onExportClick: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "RouteBook",
-                        style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* TODO: Open Drawer */ }) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
-                    }
-                },
-                actions = {
-                    OutlinedButton(
-                        onClick = onImportClick,
-                        shape = MaterialTheme.shapes.medium
-                    ) { Text("Import") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = onExportClick,
-                        shape = MaterialTheme.shapes.medium
-                    ) { Text("Export") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = { /* TODO: Add City/Stop */ },
-                icon = { Icon(Icons.Default.Add, contentDescription = "Add") },
-                text = { Text("Add") },
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { padding ->
-        LazyColumn(
-            contentPadding = PaddingValues(
-                top = padding.calculateTopPadding() + 8.dp,
-                bottom = padding.calculateBottomPadding() + 16.dp,
-                start = 8.dp,
-                end = 8.dp
-            ),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(cities) { city ->
-                Card(
+    var showAbout by remember { mutableStateOf(false) }
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text(
+                    "Menu",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+                Divider()
+                // Future menu items go here
+                Text(
+                    "About",
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large,
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    onClick = { onCityClick(city) }
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
+                        .fillMaxWidth()
+                        .clickable { showAbout = true; scope.launch { drawerState.close() } }
+                        .padding(16.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
                         Text(
-                            city.name,
-                            style = MaterialTheme.typography.titleLarge,
+                            "RouteBook",
+                            style = MaterialTheme.typography.displayLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        // Last update removed from UI, now auto-managed internally
-                        Text(
-                            "No. of stops: ${city.stops.size}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            Icon(Icons.Default.Menu, contentDescription = "Menu")
+                        }
+                    },
+                    actions = {
+                        OutlinedButton(
+                            onClick = onImportClick,
+                            shape = MaterialTheme.shapes.medium
+                        ) { Text("Import") }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            onClick = onExportClick,
+                            shape = MaterialTheme.shapes.medium
+                        ) { Text("Export") }
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                )
+            },
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    onClick = { /* TODO: Add City/Stop */ },
+                    icon = { Icon(Icons.Default.Add, contentDescription = "Add") },
+                    text = { Text("Add") },
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.background
+        ) { padding ->
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = padding.calculateTopPadding() + 8.dp,
+                    bottom = padding.calculateBottomPadding() + 16.dp,
+                    start = 8.dp,
+                    end = 8.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(cities) { city ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large,
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        onClick = { onCityClick(city) }
+                    ) {
+                        Column(modifier = Modifier.padding(20.dp)) {
+                            Text(
+                                city.name,
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                "No. of stops: ${city.stops.size}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
             }
+            if (showAbout) {
+                AboutDialog(onDismiss = { showAbout = false })
+            }
         }
     }
+}
+
+@Composable
+fun AboutDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("About RouteBook", style = MaterialTheme.typography.titleLarge)
+        },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text("RouteBook is a professional delivery route management app.", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(12.dp))
+                Text("Version: v0.1.0", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.secondary)
+                Text("Author: Michael Tomambiling", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
+                Text("© 2026 RouteBook. All rights reserved.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text("Close") }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StopsScreen(city: City, onBack: () -> Unit) {
     val context = LocalContext.current
+    var searchQuery by remember { mutableStateOf("") }
+    val filteredStops = city.stops.filter {
+        it.name.contains(searchQuery, ignoreCase = true) ||
+        it.address.contains(searchQuery, ignoreCase = true) ||
+        it.note.contains(searchQuery, ignoreCase = true)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -234,9 +299,19 @@ fun StopsScreen(city: City, onBack: () -> Unit) {
             .fillMaxSize()
             .padding(padding)
             .padding(16.dp)) {
-            Text("Stops in ${city.name}", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(12.dp))
-            city.stops.forEach { stop ->
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                placeholder = { Text("Search stops...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+                singleLine = true,
+                shape = MaterialTheme.shapes.medium
+            )
+            // ...existing code...
+            filteredStops.forEach { stop ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

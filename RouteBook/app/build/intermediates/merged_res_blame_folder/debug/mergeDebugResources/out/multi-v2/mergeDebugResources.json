@@ -3785,23 +3785,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook App\\RouteBook\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "6,2,3,4,5",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "234,57,103,149,193",
-                        "endColumns": "39,44,44,42,39",
-                        "endOffsets": "269,97,143,187,228"
-                    },
-                    "to": {
-                        "startLines": "640,947,948,959,962",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "32798,55654,55699,56441,56605",
-                        "endColumns": "39,44,44,42,39",
-                        "endOffsets": "32833,55694,55739,56479,56640"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Maeshiel\\.gradle\\caches\\9.0-milestone-1\\transforms\\5b6d6cb9ce579594e14044eb9266317e\\transformed\\jetified-customview-poolingcontainer-1.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3",
@@ -3871,6 +3854,23 @@
                         "endLines": "506,1107,1108,1109,1117,1118,1119,1810,12697",
                         "endColumns": "55,58,47,55,74,75,71,65,24",
                         "endOffsets": "25672,66251,66299,66355,67041,67117,67189,120644,769688"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook\\RouteBook\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "6,2,3,4,5",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "234,57,103,149,193",
+                        "endColumns": "39,44,44,42,39",
+                        "endOffsets": "269,97,143,187,228"
+                    },
+                    "to": {
+                        "startLines": "640,947,948,959,962",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "32798,55654,55699,56441,56605",
+                        "endColumns": "39,44,44,42,39",
+                        "endOffsets": "32833,55694,55739,56479,56640"
                     }
                 },
                 {
@@ -4020,25 +4020,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook App\\RouteBook\\app\\src\\main\\res\\values\\styles.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endLines": "4",
-                        "endColumns": "12",
-                        "endOffsets": "192"
-                    },
-                    "to": {
-                        "startLines": "6613",
-                        "startColumns": "4",
-                        "startOffsets": "464022",
-                        "endLines": "6615",
-                        "endColumns": "12",
-                        "endOffsets": "464120"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Maeshiel\\.gradle\\caches\\9.0-milestone-1\\transforms\\e76514bb9df939a0205bdfb42387f6fd\\transformed\\core-1.12.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,98,99,103,104,105,106,112,122,155,176,209",
@@ -4055,6 +4036,23 @@
                         "endLines": "470,634,635,649,650,937,938,1049,1050,1051,1052,1053,1054,1055,1736,1737,1738,1739,1740,1741,1742,1743,1744,1745,1746,1747,1748,1749,1750,1761,1762,1763,1811,1812,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1854,1855,1856,1864,1946,1987,1988,1989,1990,1991,1992,1993,2201,6135,6139,6140,6144,6145,7263,7264,10217,10579,11445,11466,11514,11520",
                         "endColumns": "59,71,87,64,65,68,62,69,67,71,69,60,73,72,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,64,34,34,54,62,54,57,57,60,62,56,50,49,60,56,65,33,34,34,69,66,71,68,68,73,71,87,70,116,12,109,12,128,71,66,24,24,24,24,24,24",
                         "endOffsets": "24144,32386,32474,33539,33605,54998,55061,62449,62517,62589,62659,62720,62794,62867,116078,116139,116201,116265,116327,116388,116456,116556,116616,116682,116755,116824,116881,116933,116995,117797,117873,117938,120679,120714,122320,122383,122438,122496,122554,122615,122678,122735,122786,122836,122897,122954,123020,123054,123089,123471,128702,132324,132396,132465,132534,132608,132680,132768,156593,431523,431724,431834,432035,432164,512638,512705,675715,688398,723664,724345,725571,725738"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook\\RouteBook\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "46",
+                        "endOffsets": "99"
+                    },
+                    "to": {
+                        "startLines": "1979",
+                        "startColumns": "4",
+                        "startOffsets": "130976",
+                        "endColumns": "46",
+                        "endOffsets": "131018"
                     }
                 },
                 {
@@ -4077,6 +4075,25 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook\\RouteBook\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "192"
+                    },
+                    "to": {
+                        "startLines": "6613",
+                        "startColumns": "4",
+                        "startOffsets": "464022",
+                        "endLines": "6615",
+                        "endColumns": "12",
+                        "endOffsets": "464120"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Maeshiel\\.gradle\\caches\\9.0-milestone-1\\transforms\\2c8599643611dba35b8f70098560919a\\transformed\\drawerlayout-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5",
@@ -4093,23 +4110,6 @@
                         "endLines": "138,141,1056,11329",
                         "endColumns": "55,47,51,24",
                         "endOffsets": "7047,7203,62919,719543"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Maeshiel\\Documents\\Routebook App\\RouteBook\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endColumns": "46",
-                        "endOffsets": "99"
-                    },
-                    "to": {
-                        "startLines": "1979",
-                        "startColumns": "4",
-                        "startOffsets": "130976",
-                        "endColumns": "46",
-                        "endOffsets": "131018"
                     }
                 },
                 {
