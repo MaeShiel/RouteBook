@@ -1,5 +1,17 @@
 [
     {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-hdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+    },
+    {
         "merged": "com.routebook.app-debug-60:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
         "source": "com.routebook.app-main-62:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
@@ -8,7 +20,63 @@
         "source": "com.routebook.app-main-62:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.routebook.app-debug-60:/drawable_topbarbg.png.flat",
-        "source": "com.routebook.app-main-62:/drawable/topbarbg.png"
+        "merged": "com.routebook.app-debug-60:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-debug-60:\\drawable_topbarbg.png.flat",
+        "source": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-main-62:\\drawable\\topbarbg.png"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-debug-60:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-main-62:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-debug-60:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Maeshiel\\.gradle\\daemon\\9.0-milestone-1\\com.routebook.app-main-62:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-mdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.routebook.app-debug-60:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.routebook.app-main-62:/mipmap-mdpi/ic_launcher.webp"
     }
 ]
