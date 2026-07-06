@@ -1,6 +1,7 @@
 
 package com.routebook
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Close
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Image
 import com.routebook.R
@@ -161,7 +163,8 @@ class MainActivity : ComponentActivity() {
                             cities = cities.value,
                             onCityClick = { city -> navState = NavState.Stops(city) },
                             onImportClick = { importLauncher.launch(arrayOf("text/csv", "application/csv", "text/comma-separated-values", "application/vnd.ms-excel")) },
-                            onExportClick = { exportLauncher.launch("RouteBook.csv") }
+                            onExportClick = { exportLauncher.launch("RouteBook.csv") },
+                            onDrivingTimeClick = { navState = NavState.DrivingTime }
                         )
                         is NavState.Stops -> StopsScreen(
                             city = state.city,
@@ -169,6 +172,7 @@ class MainActivity : ComponentActivity() {
                             cities = cities.value,
                             setCities = { updateCities(it) }
                         )
+                        is NavState.DrivingTime -> DrivingTimeScreen(onBack = { navState = NavState.Home })
                     }
                 }
             }
@@ -203,6 +207,7 @@ class MainActivity : ComponentActivity() {
 sealed class NavState {
     object Home : NavState()
     data class Stops(val city: City) : NavState()
+    object DrivingTime : NavState()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -211,7 +216,8 @@ fun HomeScreen(
     cities: List<City>,
     onCityClick: (City) -> Unit,
     onImportClick: () -> Unit = {},
-    onExportClick: () -> Unit = {}
+    onExportClick: () -> Unit = {},
+    onDrivingTimeClick: () -> Unit = {}
 ) {
     var showAbout by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -226,7 +232,15 @@ fun HomeScreen(
                     modifier = Modifier.padding(16.dp)
                 )
                 Divider()
-                // Future menu items go here
+                // Menu items
+                Text(
+                    "Driving Time",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onDrivingTimeClick(); scope.launch { drawerState.close() } }
+                        .padding(16.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Text(
                     "About",
                     modifier = Modifier
@@ -359,9 +373,14 @@ fun StopsScreen(
     val cityIndex = cities.indexOfFirst { it.name == city.name }
     var stops by remember { mutableStateOf(city.stops.toMutableList()) }
     var showAddDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
+    var editingStopIndex by remember { mutableStateOf(-1) }
     var newStopName by remember { mutableStateOf("") }
     var newStopAddress by remember { mutableStateOf("") }
     var newStopNote by remember { mutableStateOf("") }
+    var editStopName by remember { mutableStateOf("") }
+    var editStopAddress by remember { mutableStateOf("") }
+    var editStopNote by remember { mutableStateOf("") }
     val filteredStops = stops.filter {
         it.name.contains(searchQuery, ignoreCase = true) ||
         it.address.contains(searchQuery, ignoreCase = true) ||
@@ -393,6 +412,16 @@ fun StopsScreen(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Clear search"
+                            )
+                        }
+                    }
+                },
                 placeholder = { Text("Search stops...") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -425,7 +454,8 @@ fun StopsScreen(
                             Spacer(modifier = Modifier.height(12.dp))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 OutlinedButton(
                                     onClick = {
@@ -438,29 +468,102 @@ fun StopsScreen(
                                 ) {
                                     Text("Navigate")
                                 }
-                                OutlinedButton(
-                                    onClick = {
-                                        // Remove stop from list and update state
-                                        val stopIndex = stops.indexOf(stop)
-                                        if (stopIndex >= 0) {
-                                            val newStops = stops.toMutableList().apply { removeAt(stopIndex) }
-                                            stops = newStops
-                                            if (cityIndex >= 0) {
-                                                val updatedCities = cities.toMutableList()
-                                                val updatedCity = city.copy(stops = newStops)
-                                                updatedCities[cityIndex] = updatedCity
-                                                setCities(updatedCities)
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    IconButton(
+                                        onClick = {
+                                            val stopIndex = stops.indexOf(stop)
+                                            if (stopIndex >= 0) {
+                                                editingStopIndex = stopIndex
+                                                editStopName = stop.name
+                                                editStopAddress = stop.address
+                                                editStopNote = stop.note
+                                                showEditDialog = true
                                             }
                                         }
-                                    },
-                                    shape = MaterialTheme.shapes.small
-                                ) {
-                                    Text("Delete")
+                                    ) {
+                                        Icon(Icons.Default.Edit, contentDescription = "Edit Stop")
+                                    }
+                                    OutlinedButton(
+                                        onClick = {
+                                            // Remove stop from list and update state
+                                            val stopIndex = stops.indexOf(stop)
+                                            if (stopIndex >= 0) {
+                                                val newStops = stops.toMutableList().apply { removeAt(stopIndex) }
+                                                stops = newStops
+                                                if (cityIndex >= 0) {
+                                                    val updatedCities = cities.toMutableList()
+                                                    val updatedCity = city.copy(stops = newStops)
+                                                    updatedCities[cityIndex] = updatedCity
+                                                    setCities(updatedCities)
+                                                }
+                                            }
+                                        },
+                                        shape = MaterialTheme.shapes.small
+                                    ) {
+                                        Text("Delete")
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            if (showEditDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showEditDialog = false
+                        editingStopIndex = -1
+                    },
+                    title = { Text("Edit Stop") },
+                    text = {
+                        Column {
+                            OutlinedTextField(
+                                value = editStopName,
+                                onValueChange = { editStopName = it },
+                                label = { Text("Stop Name") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = editStopAddress,
+                                onValueChange = { editStopAddress = it },
+                                label = { Text("Stop Address") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = editStopNote,
+                                onValueChange = { editStopNote = it },
+                                label = { Text("Notes") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            if (editingStopIndex >= 0 && editStopName.isNotBlank() && editStopAddress.isNotBlank()) {
+                                val updatedStops = stops.toMutableList()
+                                updatedStops[editingStopIndex] = Stop(editStopName, editStopAddress, editStopNote)
+                                stops = updatedStops
+                                if (cityIndex >= 0) {
+                                    val updatedCities = cities.toMutableList()
+                                    val updatedCity = city.copy(stops = updatedStops)
+                                    updatedCities[cityIndex] = updatedCity
+                                    setCities(updatedCities)
+                                }
+                                showEditDialog = false
+                                editingStopIndex = -1
+                            }
+                        }) { Text("Save") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showEditDialog = false
+                            editingStopIndex = -1
+                        }) { Text("Cancel") }
+                    }
+                )
             }
             if (showAddDialog) {
                 AlertDialog(

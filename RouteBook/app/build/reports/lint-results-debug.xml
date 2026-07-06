@@ -54,7 +54,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of com.google.android.material:material than 1.11.0 is available: 1.13.0"
+        message="A newer version of com.google.android.material:material than 1.11.0 is available: 1.14.0"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -102,7 +102,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.10.0"
+        message="A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.11.0"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -118,7 +118,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.10.0"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.11.0"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -134,7 +134,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.04.01"
+        message="A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.06.01"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -166,7 +166,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.10.0"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.11.0"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -182,7 +182,7 @@
     <issue
         id="NewerVersionAvailable"
         severity="Warning"
-        message="A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.3.21"
+        message="A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.4.0"
         category="Correctness"
         priority="4"
         summary="Newer Library Versions Available"
@@ -239,8 +239,88 @@
         errorLine2="                            ~~~~~~~~~~~~~~">
         <location
             file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\MainActivity.kt"
-            line="325"
+            line="374"
             column="29"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var beginHour by rememberSaveable { mutableStateOf(8) }"
+        errorLine2="                                        ~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\DrivingTimeScreen.kt"
+            line="66"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var beginMinute by rememberSaveable { mutableStateOf(0) }"
+        errorLine2="                                          ~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\DrivingTimeScreen.kt"
+            line="67"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var endHour by rememberSaveable { mutableStateOf(17) }"
+        errorLine2="                                      ~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\DrivingTimeScreen.kt"
+            line="68"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var endMinute by rememberSaveable { mutableStateOf(0) }"
+        errorLine2="                                        ~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\DrivingTimeScreen.kt"
+            line="69"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        severity="Hint"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        category="Performance"
+        priority="3"
+        summary="`State&lt;T>` will autobox values assigned to this state. Use a specialized state type instead."
+        explanation="Calling `mutableStateOf&lt;T>()` when `T` is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for `Int`, `Long`, `Float`, and `Double` when the state does not need to track null values and does not override the default `SnapshotMutationPolicy`. See `mutableIntStateOf()`, `mutableLongStateOf()`, `mutableFloatStateOf()`, and `mutableDoubleStateOf()` for more information."
+        errorLine1="    var editingStopIndex by remember { mutableStateOf(-1) }"
+        errorLine2="                                       ~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\MainActivity.kt"
+            line="377"
+            column="40"/>
     </issue>
 
     <issue
@@ -352,6 +432,38 @@
     </issue>
 
     <issue
+        id="MonochromeLauncherIcon"
+        severity="Warning"
+        message="The application adaptive icon is missing a monochrome tag"
+        category="Usability:Icons"
+        priority="6"
+        summary="Monochrome icon is not defined"
+        explanation="If `android:roundIcon` and `android:icon` are both in your manifest, you must either remove the reference to `android:roundIcon` if it is not needed; or, supply the monochrome icon in the drawable defined by the `android:roundIcon` and `android:icon` attribute.&#xA;&#xA;For example, if `android:roundIcon` and `android:icon` are both in the manifest, a launcher might choose to use `android:roundIcon` over `android:icon` to display the adaptive app icon. Therefore, your themed application iconwill not show if your monochrome attribute is not also specified in `android:roundIcon`."
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\res\mipmap-anydpi-v26\ic_launcher.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MonochromeLauncherIcon"
+        severity="Warning"
+        message="The application adaptive roundIcon is missing a monochrome tag"
+        category="Usability:Icons"
+        priority="6"
+        summary="Monochrome icon is not defined"
+        explanation="If `android:roundIcon` and `android:icon` are both in your manifest, you must either remove the reference to `android:roundIcon` if it is not needed; or, supply the monochrome icon in the drawable defined by the `android:roundIcon` and `android:icon` attribute.&#xA;&#xA;For example, if `android:roundIcon` and `android:icon` are both in the manifest, a launcher might choose to use `android:roundIcon` over `android:icon` to display the adaptive app icon. Therefore, your themed application iconwill not show if your monochrome attribute is not also specified in `android:roundIcon`."
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\res\mipmap-anydpi-v26\ic_launcher_round.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
         id="IconLocation"
         severity="Warning"
         message="Found bitmap drawable `res/drawable/topbarbg.png` in densityless folder"
@@ -377,7 +489,7 @@
         errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\Maeshiel\Documents\Routebook\RouteBook\app\src\main\java\com\routebook\MainActivity.kt"
-            line="397"
+            line="462"
             column="60"/>
     </issue>
 

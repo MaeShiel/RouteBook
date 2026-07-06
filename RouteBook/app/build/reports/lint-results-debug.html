@@ -177,9 +177,9 @@ document.getElementById(id).style.display = 'none';
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title">Lint Report: 24 warnings</span>
+      <span class="mdl-layout-title">Lint Report: 26 warnings and 5 hints</span>
       <div class="mdl-layout-spacer"></div>
-      <nav class="mdl-navigation mdl-layout--large-screen-only">Check performed at Tue May 05 05:09:51 CDT 2026 by AGP (8.13.2)</nav>
+      <nav class="mdl-navigation mdl-layout--large-screen-only">Check performed at Sun Jul 05 18:41:48 CDT 2026 by AGP (8.13.2)</nav>
     </div>
   </header>
   <div class="mdl-layout__drawer">
@@ -190,7 +190,9 @@ document.getElementById(id).style.display = 'none';
       <a class="mdl-navigation__link" href="#GradleDependency"><i class="material-icons warning-icon">warning</i>Obsolete Gradle Dependency (10)</a>
       <a class="mdl-navigation__link" href="#NewerVersionAvailable"><i class="material-icons warning-icon">warning</i>Newer Library Versions Available (3)</a>
       <a class="mdl-navigation__link" href="#MutableCollectionMutableState"><i class="material-icons warning-icon">warning</i>Creating a MutableState object with a mutable collection type (1)</a>
+      <a class="mdl-navigation__link" href="#AutoboxingStateCreation"><i class="material-icons warning-icon">warning</i><code>State&lt;T></code> will autobox values assigned to this state. Use a specialized state type instead. (5)</a>
       <a class="mdl-navigation__link" href="#UnusedResources"><i class="material-icons warning-icon">warning</i>Unused resources (7)</a>
+      <a class="mdl-navigation__link" href="#MonochromeLauncherIcon"><i class="material-icons warning-icon">warning</i>Monochrome icon is not defined (2)</a>
       <a class="mdl-navigation__link" href="#IconLocation"><i class="material-icons warning-icon">warning</i>Image defined in density-independent drawable folder (1)</a>
       <a class="mdl-navigation__link" href="#UseKtx"><i class="material-icons warning-icon">warning</i>Use KTX extension function (1)</a>
     </nav>
@@ -222,10 +224,16 @@ document.getElementById(id).style.display = 'none';
 <tr><td class="countColumn"></td><td class="categoryColumn"><a href="#Performance">Performance</a>
 </td></tr>
 <tr>
+<td class="countColumn">5</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
+<a href="#AutoboxingStateCreation">AutoboxingStateCreation</a>: <code>State&lt;T></code> will autobox values assigned to this state. Use a specialized state type instead.</td></tr>
+<tr>
 <td class="countColumn">7</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#UnusedResources">UnusedResources</a>: Unused resources</td></tr>
 <tr><td class="countColumn"></td><td class="categoryColumn"><a href="#Usability:Icons">Usability:Icons</a>
 </td></tr>
+<tr>
+<td class="countColumn">2</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
+<a href="#MonochromeLauncherIcon">MonochromeLauncherIcon</a>: Monochrome icon is not defined</td></tr>
 <tr>
 <td class="countColumn">1</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#IconLocation">IconLocation</a>: Image defined in density-independent drawable folder</td></tr>
@@ -326,7 +334,7 @@ Dismiss</button>            </div>
 <span class="lineno"> 39 </span>    implementation <span class="string">'androidx.recyclerview:recyclerview:1.3.2'</span>
 </pre>
 
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:37</span>: <span class="message">A newer version of com.google.android.material:material than 1.11.0 is available: 1.13.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:37</span>: <span class="message">A newer version of com.google.android.material:material than 1.11.0 is available: 1.14.0</span><br /><pre class="errorlines">
 <span class="lineno"> 34 </span>
 <span class="lineno"> 35 </span>dependencies {
 <span class="lineno"> 36 </span>    implementation <span class="string">'androidx.appcompat:appcompat:1.6.1'</span>
@@ -358,7 +366,7 @@ Dismiss</button>            </div>
 
 <button class="mdl-button mdl-js-button mdl-button--primary" id="GradleDependencyDivLink" onclick="reveal('GradleDependencyDiv');" />+ 5 More Occurrences...</button>
 <div id="GradleDependencyDiv" style="display: none">
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:40</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.10.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:40</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.11.0</span><br /><pre class="errorlines">
 <span class="lineno"> 37 </span>    implementation <span class="string">'com.google.android.material:material:1.11.0'</span>
 <span class="lineno"> 38 </span>    implementation <span class="string">'androidx.constraintlayout:constraintlayout:2.1.4'</span>
 <span class="lineno"> 39 </span>    implementation <span class="string">'androidx.recyclerview:recyclerview:1.3.2'</span>
@@ -368,7 +376,7 @@ Dismiss</button>            </div>
 <span class="lineno"> 43 </span>
 </pre>
 
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:41</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.10.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:41</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.11.0</span><br /><pre class="errorlines">
 <span class="lineno"> 38 </span>    implementation <span class="string">'androidx.constraintlayout:constraintlayout:2.1.4'</span>
 <span class="lineno"> 39 </span>    implementation <span class="string">'androidx.recyclerview:recyclerview:1.3.2'</span>
 <span class="lineno"> 40 </span>    implementation <span class="string">'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'</span>
@@ -377,7 +385,7 @@ Dismiss</button>            </div>
 <span class="lineno"> 43 </span>
 <span class="lineno"> 44 </span>    <span class="comment">// Jetpack Compose dependencies</span></pre>
 
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:45</span>: <span class="message">A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.04.01</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:45</span>: <span class="message">A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.06.01</span><br /><pre class="errorlines">
 <span class="lineno"> 42 </span>    implementation <span class="string">'com.opencsv:opencsv:5.8'</span>
 <span class="lineno"> 43 </span>
 <span class="lineno"> 44 </span>    <span class="comment">// Jetpack Compose dependencies</span>
@@ -397,7 +405,7 @@ Dismiss</button>            </div>
 <span class="lineno"> 55 </span>    debugImplementation <span class="string">'androidx.compose.ui:ui-tooling'</span>
 </pre>
 
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:53</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.10.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:53</span>: <span class="message">A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.11.0</span><br /><pre class="errorlines">
 <span class="lineno"> 50 </span>    implementation <span class="string">'androidx.compose.foundation:foundation'</span>
 <span class="lineno"> 51 </span>    implementation <span class="string">'androidx.compose.runtime:runtime'</span>
 <span class="lineno"> 52 </span>    implementation <span class="string">'androidx.activity:activity-compose:1.8.2'</span>
@@ -444,7 +452,7 @@ Dismiss</button>            </div>
               <div class="mdl-card__supporting-text">
 <div class="issue">
 <div class="warningslist">
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:5</span>: <span class="message">A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.3.21</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:5</span>: <span class="message">A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.4.0</span><br /><pre class="errorlines">
 <span class="lineno">  2 </span>plugins {
 <span class="lineno">  3 </span>    id <span class="string">'com.android.application'</span>
 <span class="lineno">  4 </span>    id <span class="string">'org.jetbrains.kotlin.android'</span>
@@ -510,14 +518,14 @@ Dismiss</button>            </div>
               <div class="mdl-card__supporting-text">
 <div class="issue">
 <div class="warningslist">
-<span class="location"><a href="../../src/main/java/com/routebook/MainActivity.kt">../../src/main/java/com/routebook/MainActivity.kt</a>:325</span>: <span class="message">Creating a MutableState object with a mutable collection type</span><br /><pre class="errorlines">
-<span class="lineno"> 322 </span>    <span class="keyword">val</span> context = LocalContext.current
-<span class="lineno"> 323 </span>    <span class="keyword">var</span> searchQuery by remember { mutableStateOf(<span class="string">""</span>) }
-<span class="lineno"> 324 </span>    <span class="keyword">val</span> cityIndex = cities.indexOfFirst { it.name == city.name }
-<span class="caretline"><span class="lineno"> 325 </span>    <span class="keyword">var</span> stops by remember { <span class="warning">mutableStateOf</span>(city.stops.toMutableList()) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 326 </span>    <span class="keyword">var</span> showAddDialog by remember { mutableStateOf(<span class="keyword">false</span>) }
-<span class="lineno"> 327 </span>    <span class="keyword">var</span> newStopName by remember { mutableStateOf(<span class="string">""</span>) }
-<span class="lineno"> 328 </span>    <span class="keyword">var</span> newStopAddress by remember { mutableStateOf(<span class="string">""</span>) }
+<span class="location"><a href="../../src/main/java/com/routebook/MainActivity.kt">../../src/main/java/com/routebook/MainActivity.kt</a>:374</span>: <span class="message">Creating a MutableState object with a mutable collection type</span><br /><pre class="errorlines">
+<span class="lineno"> 371 </span>    <span class="keyword">val</span> context = LocalContext.current
+<span class="lineno"> 372 </span>    <span class="keyword">var</span> searchQuery by remember { mutableStateOf(<span class="string">""</span>) }
+<span class="lineno"> 373 </span>    <span class="keyword">val</span> cityIndex = cities.indexOfFirst { it.name == city.name }
+<span class="caretline"><span class="lineno"> 374 </span>    <span class="keyword">var</span> stops by remember { <span class="warning">mutableStateOf</span>(city.stops.toMutableList()) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 375 </span>    <span class="keyword">var</span> showAddDialog by remember { mutableStateOf(<span class="keyword">false</span>) }
+<span class="lineno"> 376 </span>    <span class="keyword">var</span> showEditDialog by remember { mutableStateOf(<span class="keyword">false</span>) }
+<span class="lineno"> 377 </span>    <span class="keyword">var</span> editingStopIndex by remember { mutableStateOf(-<span class="number">1</span>) }
 </pre>
 
 </div>
@@ -553,7 +561,97 @@ Dismiss</button>            </div>
             </div>
           </section>
 <a name="Performance"></a>
-<a name="UnusedResources"></a>
+<a name="AutoboxingStateCreation"></a>
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="AutoboxingStateCreationCard" style="display: block;">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">State&lt;T> will autobox values assigned to this state. Use a specialized state type instead.</h2>
+  </div>
+              <div class="mdl-card__supporting-text">
+<div class="issue">
+<div class="warningslist">
+<span class="location"><a href="../../src/main/java/com/routebook/DrivingTimeScreen.kt">../../src/main/java/com/routebook/DrivingTimeScreen.kt</a>:66</span>: <span class="message">Prefer <code>mutableIntStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno">  63 </span><span class="annotation">@Composable</span>
+<span class="lineno">  64 </span><span class="keyword">fun</span> DrivingTimeScreen(onBack: () -> Unit) {
+<span class="lineno">  65 </span>    <span class="keyword">val</span> context = LocalContext.current
+<span class="caretline"><span class="lineno">  66 </span>    <span class="keyword">var</span> beginHour by rememberSaveable { <span class="warning">mutableStateOf</span>(<span class="number">8</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno">  67 </span>    <span class="keyword">var</span> beginMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+<span class="lineno">  68 </span>    <span class="keyword">var</span> endHour by rememberSaveable { mutableStateOf(<span class="number">17</span>) }
+<span class="lineno">  69 </span>    <span class="keyword">var</span> endMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+</pre>
+
+<span class="location"><a href="../../src/main/java/com/routebook/DrivingTimeScreen.kt">../../src/main/java/com/routebook/DrivingTimeScreen.kt</a>:67</span>: <span class="message">Prefer <code>mutableIntStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno">  64 </span><span class="keyword">fun</span> DrivingTimeScreen(onBack: () -> Unit) {
+<span class="lineno">  65 </span>    <span class="keyword">val</span> context = LocalContext.current
+<span class="lineno">  66 </span>    <span class="keyword">var</span> beginHour by rememberSaveable { mutableStateOf(<span class="number">8</span>) }
+<span class="caretline"><span class="lineno">  67 </span>    <span class="keyword">var</span> beginMinute by rememberSaveable { <span class="warning">mutableStateOf</span>(<span class="number">0</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno">  68 </span>    <span class="keyword">var</span> endHour by rememberSaveable { mutableStateOf(<span class="number">17</span>) }
+<span class="lineno">  69 </span>    <span class="keyword">var</span> endMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+<span class="lineno">  70 </span>    <span class="keyword">var</span> breaks by rememberSaveable { mutableStateOf(<span class="string">"30"</span>) }
+</pre>
+
+<span class="location"><a href="../../src/main/java/com/routebook/DrivingTimeScreen.kt">../../src/main/java/com/routebook/DrivingTimeScreen.kt</a>:68</span>: <span class="message">Prefer <code>mutableIntStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno">  65 </span>    <span class="keyword">val</span> context = LocalContext.current
+<span class="lineno">  66 </span>    <span class="keyword">var</span> beginHour by rememberSaveable { mutableStateOf(<span class="number">8</span>) }
+<span class="lineno">  67 </span>    <span class="keyword">var</span> beginMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+<span class="caretline"><span class="lineno">  68 </span>    <span class="keyword">var</span> endHour by rememberSaveable { <span class="warning">mutableStateOf</span>(<span class="number">17</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno">  69 </span>    <span class="keyword">var</span> endMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+<span class="lineno">  70 </span>    <span class="keyword">var</span> breaks by rememberSaveable { mutableStateOf(<span class="string">"30"</span>) }
+<span class="lineno">  71 </span>    <span class="keyword">var</span> adjustments by rememberSaveable { mutableStateOf(<span class="string">"0"</span>) }
+</pre>
+
+<span class="location"><a href="../../src/main/java/com/routebook/DrivingTimeScreen.kt">../../src/main/java/com/routebook/DrivingTimeScreen.kt</a>:69</span>: <span class="message">Prefer <code>mutableIntStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno">  66 </span>    <span class="keyword">var</span> beginHour by rememberSaveable { mutableStateOf(<span class="number">8</span>) }
+<span class="lineno">  67 </span>    <span class="keyword">var</span> beginMinute by rememberSaveable { mutableStateOf(<span class="number">0</span>) }
+<span class="lineno">  68 </span>    <span class="keyword">var</span> endHour by rememberSaveable { mutableStateOf(<span class="number">17</span>) }
+<span class="caretline"><span class="lineno">  69 </span>    <span class="keyword">var</span> endMinute by rememberSaveable { <span class="warning">mutableStateOf</span>(<span class="number">0</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno">  70 </span>    <span class="keyword">var</span> breaks by rememberSaveable { mutableStateOf(<span class="string">"30"</span>) }
+<span class="lineno">  71 </span>    <span class="keyword">var</span> adjustments by rememberSaveable { mutableStateOf(<span class="string">"0"</span>) }
+<span class="lineno">  72 </span>    <span class="keyword">var</span> showResults by rememberSaveable { mutableStateOf(<span class="keyword">false</span>) }
+</pre>
+
+<span class="location"><a href="../../src/main/java/com/routebook/MainActivity.kt">../../src/main/java/com/routebook/MainActivity.kt</a>:377</span>: <span class="message">Prefer <code>mutableIntStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno"> 374 </span>    <span class="keyword">var</span> stops by remember { mutableStateOf(city.stops.toMutableList()) }
+<span class="lineno"> 375 </span>    <span class="keyword">var</span> showAddDialog by remember { mutableStateOf(<span class="keyword">false</span>) }
+<span class="lineno"> 376 </span>    <span class="keyword">var</span> showEditDialog by remember { mutableStateOf(<span class="keyword">false</span>) }
+<span class="caretline"><span class="lineno"> 377 </span>    <span class="keyword">var</span> editingStopIndex by remember { <span class="warning">mutableStateOf</span>(-<span class="number">1</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 378 </span>    <span class="keyword">var</span> newStopName by remember { mutableStateOf(<span class="string">""</span>) }
+<span class="lineno"> 379 </span>    <span class="keyword">var</span> newStopAddress by remember { mutableStateOf(<span class="string">""</span>) }
+<span class="lineno"> 380 </span>    <span class="keyword">var</span> newStopNote by remember { mutableStateOf(<span class="string">""</span>) }
+</pre>
+
+</div>
+<div class="metadata"><div class="explanation" id="explanationAutoboxingStateCreation" style="display: none;">
+Calling <code>mutableStateOf&lt;T>()</code> when <code>T</code> is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for <code>Int</code>, <code>Long</code>, <code>Float</code>, and <code>Double</code> when the state does not need to track null values and does not override the default <code>SnapshotMutationPolicy</code>. See <code>mutableIntStateOf()</code>, <code>mutableLongStateOf()</code>, <code>mutableFloatStateOf()</code>, and <code>mutableDoubleStateOf()</code> for more information.<br/>To suppress this error, use the issue id "AutoboxingStateCreation" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+<br/></div>
+</div>
+</div>
+<div class="vendor">
+Vendor: Jetpack Compose<br/>
+Identifier: androidx.compose.runtime<br/>
+Feedback: <a href="https://issuetracker.google.com/issues/new?component=612128">https://issuetracker.google.com/issues/new?component=612128</a><br/>
+</div>
+<div class="chips">
+<span class="mdl-chip">
+    <span class="mdl-chip__text">AutoboxingStateCreation</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Performance</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Hint</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Priority 3/10</span>
+</span>
+</div>
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="explanationAutoboxingStateCreationLink" onclick="reveal('explanationAutoboxingStateCreation');">
+Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="AutoboxingStateCreationCardLink" onclick="hideid('AutoboxingStateCreationCard');">
+Dismiss</button>            </div>
+            </div>
+          </section><a name="UnusedResources"></a>
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="UnusedResourcesCard" style="display: block;">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
   <div class="mdl-card__title">
@@ -669,7 +767,61 @@ Dismiss</button>            </div>
             </div>
           </section>
 <a name="Usability:Icons"></a>
-<a name="IconLocation"></a>
+<a name="MonochromeLauncherIcon"></a>
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="MonochromeLauncherIconCard" style="display: block;">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Monochrome icon is not defined</h2>
+  </div>
+              <div class="mdl-card__supporting-text">
+<div class="issue">
+<div class="warningslist">
+<span class="location"><a href="../../src/main/res/mipmap-anydpi-v26/ic_launcher.xml">../../src/main/res/mipmap-anydpi-v26/ic_launcher.xml</a>:2</span>: <span class="message">The application adaptive icon is missing a monochrome tag</span><br /><pre class="errorlines">
+<span class="lineno"> 1 </span><span class="prologue">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="caretline"><span class="lineno"> 2 </span><span class="warning"><span class="tag">&lt;adaptive-icon</span><span class="attribute"> </span><span class="prefix">xmlns:</span><span class="attribute">android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span>></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 3 </span>    <span class="tag">&lt;background</span><span class="attribute"> </span><span class="prefix">android:</span><span class="attribute">drawable</span>=<span class="value">"@color/ic_launcher_background"</span>/>
+<span class="lineno"> 4 </span>    <span class="tag">&lt;foreground</span><span class="attribute"> </span><span class="prefix">android:</span><span class="attribute">drawable</span>=<span class="value">"@mipmap/ic_launcher_foreground"</span>/>
+<span class="lineno"> 5 </span><span class="tag">&lt;/adaptive-icon></span></pre>
+
+<span class="location"><a href="../../src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml">../../src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml</a>:2</span>: <span class="message">The application adaptive roundIcon is missing a monochrome tag</span><br /><pre class="errorlines">
+<span class="lineno"> 1 </span><span class="prologue">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="caretline"><span class="lineno"> 2 </span><span class="warning"><span class="tag">&lt;adaptive-icon</span><span class="attribute"> </span><span class="prefix">xmlns:</span><span class="attribute">android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span>></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 3 </span>    <span class="tag">&lt;background</span><span class="attribute"> </span><span class="prefix">android:</span><span class="attribute">drawable</span>=<span class="value">"@color/ic_launcher_background"</span>/>
+<span class="lineno"> 4 </span>    <span class="tag">&lt;foreground</span><span class="attribute"> </span><span class="prefix">android:</span><span class="attribute">drawable</span>=<span class="value">"@mipmap/ic_launcher_foreground"</span>/>
+<span class="lineno"> 5 </span><span class="tag">&lt;/adaptive-icon></span></pre>
+
+</div>
+<div class="metadata"><div class="explanation" id="explanationMonochromeLauncherIcon" style="display: none;">
+If <code>android:roundIcon</code> and <code>android:icon</code> are both in your manifest, you must either remove the reference to <code>android:roundIcon</code> if it is not needed; or, supply the monochrome icon in the drawable defined by the <code>android:roundIcon</code> and <code>android:icon</code> attribute.<br/>
+<br/>
+For example, if <code>android:roundIcon</code> and <code>android:icon</code> are both in the manifest, a launcher might choose to use <code>android:roundIcon</code> over <code>android:icon</code> to display the adaptive app icon. Therefore, your themed application iconwill not show if your monochrome attribute is not also specified in <code>android:roundIcon</code>.<br/>To suppress this error, use the issue id "MonochromeLauncherIcon" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+<br/></div>
+</div>
+</div>
+<div class="chips">
+<span class="mdl-chip">
+    <span class="mdl-chip__text">MonochromeLauncherIcon</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Icons</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Usability</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Warning</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Priority 6/10</span>
+</span>
+</div>
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="explanationMonochromeLauncherIconLink" onclick="reveal('explanationMonochromeLauncherIcon');">
+Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="MonochromeLauncherIconCardLink" onclick="hideid('MonochromeLauncherIconCard');">
+Dismiss</button>            </div>
+            </div>
+          </section><a name="IconLocation"></a>
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="IconLocationCard" style="display: block;">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
   <div class="mdl-card__title">
@@ -720,14 +872,14 @@ Dismiss</button>            </div>
               <div class="mdl-card__supporting-text">
 <div class="issue">
 <div class="warningslist">
-<span class="location"><a href="../../src/main/java/com/routebook/MainActivity.kt">../../src/main/java/com/routebook/MainActivity.kt</a>:397</span>: <span class="message">Use the KTX extension function <code>String.toUri</code> instead?</span><br /><pre class="errorlines">
-<span class="lineno"> 394 </span>  ) {
-<span class="lineno"> 395 </span>      OutlinedButton(
-<span class="lineno"> 396 </span>          onClick = {
-<span class="caretline"><span class="lineno"> 397 </span>              <span class="keyword">val</span> gmmIntentUri = <span class="warning">Uri.parse(<span class="string">"google.navigation:q="</span> + Uri.encode(stop.address))</span></span>
-<span class="lineno"> 398 </span>              <span class="keyword">val</span> mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-<span class="lineno"> 399 </span>              mapIntent.setPackage(<span class="string">"com.google.android.apps.maps"</span>)
-<span class="lineno"> 400 </span>              context.startActivity(mapIntent)
+<span class="location"><a href="../../src/main/java/com/routebook/MainActivity.kt">../../src/main/java/com/routebook/MainActivity.kt</a>:462</span>: <span class="message">Use the KTX extension function <code>String.toUri</code> instead?</span><br /><pre class="errorlines">
+<span class="lineno"> 459 </span>  ) {
+<span class="lineno"> 460 </span>      OutlinedButton(
+<span class="lineno"> 461 </span>          onClick = {
+<span class="caretline"><span class="lineno"> 462 </span>              <span class="keyword">val</span> gmmIntentUri = <span class="warning">Uri.parse(<span class="string">"google.navigation:q="</span> + Uri.encode(stop.address))</span></span>
+<span class="lineno"> 463 </span>              <span class="keyword">val</span> mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+<span class="lineno"> 464 </span>              mapIntent.setPackage(<span class="string">"com.google.android.apps.maps"</span>)
+<span class="lineno"> 465 </span>              context.startActivity(mapIntent)
 </pre>
 
 </div>

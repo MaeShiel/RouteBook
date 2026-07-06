@@ -60,7 +60,7 @@
             endOffset="80"/>
         <entry
             name="model"
-            string="color[purple_500(D),purple_700(D),teal_200(D),white(D),black(D)],drawable[topbarbg(D)],mipmap[ic_launcher(U),ic_launcher_round(U)],string[app_name(D)],style[Theme_RouteBook(U),Theme_Material3_DayNight_NoActionBar(R)];9^a;;;"/>
+            string="color[ic_launcher_background(U),purple_500(D),purple_700(D),teal_200(D),white(D),black(D)],drawable[topbarbg(D)],mipmap[ic_launcher(U),ic_launcher_round(U),ic_launcher_foreground(U)],string[app_name(D)],style[Theme_RouteBook(U),Theme_Material3_DayNight_NoActionBar(R)];7^0^9,8^0^9,b^c;;;"/>
     </map>
 
 </incidents>

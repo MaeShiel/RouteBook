@@ -62,12 +62,12 @@
     <incident
         id="GradleDependency"
         severity="warning"
-        message="A newer version of com.google.android.material:material than 1.11.0 is available: 1.13.0">
+        message="A newer version of com.google.android.material:material than 1.11.0 is available: 1.14.0">
         <fix-replace
-            description="Change to 1.13.0"
+            description="Change to 1.14.0"
             family="Update versions"
             oldString="1.11.0"
-            replacement="1.13.0"
+            replacement="1.14.0"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -122,12 +122,12 @@
     <incident
         id="GradleDependency"
         severity="warning"
-        message="A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.10.0">
+        message="A newer version of androidx.lifecycle:lifecycle-livedata-ktx than 2.7.0 is available: 2.11.0">
         <fix-replace
-            description="Change to 2.10.0"
+            description="Change to 2.11.0"
             family="Update versions"
             oldString="2.7.0"
-            replacement="2.10.0"
+            replacement="2.11.0"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -142,12 +142,12 @@
     <incident
         id="GradleDependency"
         severity="warning"
-        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.10.0">
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.7.0 is available: 2.11.0">
         <fix-replace
-            description="Change to 2.10.0"
+            description="Change to 2.11.0"
             family="Update versions"
             oldString="2.7.0"
-            replacement="2.10.0"
+            replacement="2.11.0"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -162,12 +162,12 @@
     <incident
         id="GradleDependency"
         severity="warning"
-        message="A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.04.01">
+        message="A newer version of androidx.compose:compose-bom than 2024.04.01 is available: 2026.06.01">
         <fix-replace
-            description="Change to 2026.04.01"
+            description="Change to 2026.06.01"
             family="Update versions"
             oldString="2024.04.01"
-            replacement="2026.04.01"
+            replacement="2026.06.01"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -202,12 +202,12 @@
     <incident
         id="GradleDependency"
         severity="warning"
-        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.10.0">
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.7.0 is available: 2.11.0">
         <fix-replace
-            description="Change to 2.10.0"
+            description="Change to 2.11.0"
             family="Update versions"
             oldString="2.7.0"
-            replacement="2.10.0"
+            replacement="2.11.0"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -222,12 +222,12 @@
     <incident
         id="NewerVersionAvailable"
         severity="warning"
-        message="A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.3.21">
+        message="A newer version of org.jetbrains.kotlin.plugin.compose than 2.2.0 is available: 2.4.0">
         <fix-replace
-            description="Change to 2.3.21"
+            description="Change to 2.4.0"
             family="Update versions"
             oldString="2.2.0"
-            replacement="2.3.21"
+            replacement="2.4.0"
             priority="0"/>
         <location
             file="${:app*projectDir}/build.gradle"
@@ -285,12 +285,160 @@
         message="Creating a MutableState object with a mutable collection type">
         <location
             file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/MainActivity.kt"
-            line="325"
+            line="374"
             column="29"
-            startOffset="14305"
-            endLine="325"
+            startOffset="16218"
+            endLine="374"
             endColumn="43"
-            endOffset="14319"/>
+            endOffset="16232"/>
+    </incident>
+
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableIntStateOf"
+            replacement="androidx.compose.runtime.mutableIntStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+                startOffset="2196"
+                endOffset="2210"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+            line="66"
+            column="41"
+            startOffset="2196"
+            endLine="66"
+            endColumn="55"
+            endOffset="2210"/>
+    </incident>
+
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableIntStateOf"
+            replacement="androidx.compose.runtime.mutableIntStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+                startOffset="2258"
+                endOffset="2272"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+            line="67"
+            column="43"
+            startOffset="2258"
+            endLine="67"
+            endColumn="57"
+            endOffset="2272"/>
+    </incident>
+
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableIntStateOf"
+            replacement="androidx.compose.runtime.mutableIntStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+                startOffset="2316"
+                endOffset="2330"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+            line="68"
+            column="39"
+            startOffset="2316"
+            endLine="68"
+            endColumn="53"
+            endOffset="2330"/>
+    </incident>
+
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableIntStateOf"
+            replacement="androidx.compose.runtime.mutableIntStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+                startOffset="2377"
+                endOffset="2391"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/DrivingTimeScreen.kt"
+            line="69"
+            column="41"
+            startOffset="2377"
+            endLine="69"
+            endColumn="55"
+            endOffset="2391"/>
+    </incident>
+
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableIntStateOf"
+            replacement="androidx.compose.runtime.mutableIntStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/MainActivity.kt"
+                startOffset="16423"
+                endOffset="16437"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/MainActivity.kt"
+            line="377"
+            column="40"
+            startOffset="16423"
+            endLine="377"
+            endColumn="54"
+            endOffset="16437"/>
+    </incident>
+
+    <incident
+        id="MonochromeLauncherIcon"
+        severity="warning"
+        message="The application adaptive icon is missing a monochrome tag">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-anydpi-v26/ic_launcher.xml"
+            line="2"
+            column="1"
+            startOffset="40"
+            endLine="5"
+            endColumn="17"
+            endOffset="269"/>
+    </incident>
+
+    <incident
+        id="MonochromeLauncherIcon"
+        severity="warning"
+        message="The application adaptive roundIcon is missing a monochrome tag">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-anydpi-v26/ic_launcher_round.xml"
+            line="2"
+            column="1"
+            startOffset="40"
+            endLine="5"
+            endColumn="17"
+            endOffset="269"/>
     </incident>
 
     <incident
@@ -317,17 +465,17 @@
             priority="0">
             <range
                 file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/MainActivity.kt"
-                startOffset="17741"
-                endOffset="17801"/>
+                startOffset="20446"
+                endOffset="20506"/>
         </fix-replace>
         <location
             file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/routebook/MainActivity.kt"
-            line="397"
+            line="462"
             column="60"
-            startOffset="17741"
-            endLine="397"
+            startOffset="20446"
+            endLine="462"
             endColumn="120"
-            endOffset="17801"/>
+            endOffset="20506"/>
     </incident>
 
 </incidents>
