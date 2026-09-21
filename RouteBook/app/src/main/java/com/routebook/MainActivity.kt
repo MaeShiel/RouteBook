@@ -38,8 +38,28 @@ import com.routebook.R
 import androidx.compose.ui.Alignment
 
 // Data models
-data class Stop(val name: String, val address: String, val note: String)
+// address = street only; stopState holds combined state + zip (e.g. "ND 58318")
+data class Stop(val name: String, val address: String, val stopCity: String = "", val stopState: String = "", val note: String = "")
 data class City(val name: String, val stops: List<Stop>)
+
+// Splits a legacy combined "Street, City, State Zip" address into its parts
+fun splitLegacyAddress(full: String): Triple<String, String, String> {
+    val parts = full.split(",").map { it.trim() }
+    return when {
+        parts.size >= 3 -> Triple(parts.dropLast(2).joinToString(", "), parts[parts.size - 2], parts.last())
+        parts.size == 2 -> Triple(parts[0], "", parts[1])
+        else -> Triple(full, "", "")
+    }
+}
+
+// Builds the full "Street, City, State Zip" string and opens it in Google Maps navigation
+fun navigateToStop(context: android.content.Context, stop: Stop) {
+    val fullAddress = listOf(stop.address, stop.stopCity, stop.stopState).filter { it.isNotBlank() }.joinToString(", ")
+    val gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(fullAddress))
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    context.startActivity(mapIntent)
+}
 
 class MainActivity : ComponentActivity() {
 
@@ -63,7 +83,22 @@ class MainActivity : ComponentActivity() {
                 if (file.exists()) {
                     val json = file.readText()
                     val type = object : TypeToken<List<City>>() {}.type
-                    gson.fromJson<List<City>>(json, type)
+                    val raw = gson.fromJson<List<City>>(json, type) ?: return null
+                    // Sanitize nulls from older cached data and migrate combined addresses
+                    raw.map { city ->
+                        city.copy(stops = city.stops.map { stop ->
+                            val name = stop.name ?: ""
+                            val address = stop.address ?: ""
+                            var stopCity = stop.stopCity ?: ""
+                            var stopState = stop.stopState ?: ""
+                            var street = address
+                            if (stopCity.isBlank() && stopState.isBlank() && address.contains(",")) {
+                                val (s, c, st) = splitLegacyAddress(address)
+                                street = s; stopCity = c; stopState = st
+                            }
+                            Stop(name, street, stopCity, stopState, stop.note ?: "")
+                        })
+                    }
                 } else null
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -89,6 +124,8 @@ class MainActivity : ComponentActivity() {
                             val cityIdx = header.indexOf("City")
                             val stopNameIdx = header.indexOf("StopName")
                             val stopAddressIdx = header.indexOf("StopAddress")
+                            val stopCityIdx = header.indexOf("Stop City")
+                            val stopStateIdx = header.indexOf("Stop State")
                             val noteIdx = header.indexOf("Note")
                             // Check for required columns
                             if (cityIdx == -1 || stopNameIdx == -1 || stopAddressIdx == -1) {
@@ -100,9 +137,19 @@ class MainActivity : ComponentActivity() {
                                 val cols = parseCsvLine(line)
                                 if (cols.size > maxOf(cityIdx, stopNameIdx, stopAddressIdx)) {
                                     val city = cols[cityIdx]
+                                    var street = cols[stopAddressIdx]
+                                    var stopCity = if (stopCityIdx >= 0 && stopCityIdx < cols.size) cols[stopCityIdx] else ""
+                                    var stopState = if (stopStateIdx >= 0 && stopStateIdx < cols.size) cols[stopStateIdx] else ""
+                                    // Legacy CSVs store the full address in one column; split it on import
+                                    if (stopCityIdx == -1 && stopStateIdx == -1 && street.contains(",")) {
+                                        val (s, c, st) = splitLegacyAddress(street)
+                                        street = s; stopCity = c; stopState = st
+                                    }
                                     val stop = Stop(
                                         name = cols[stopNameIdx],
-                                        address = cols[stopAddressIdx],
+                                        address = street,
+                                        stopCity = stopCity,
+                                        stopState = stopState,
                                         note = if (noteIdx >= 0 && noteIdx < cols.size) cols[noteIdx] else ""
                                     )
                                     cityMap.getOrPut(city) { mutableListOf() }.add(stop)
@@ -124,10 +171,10 @@ class MainActivity : ComponentActivity() {
             if (uri != null) {
                 try {
                     val cities = citiesState?.value ?: return@registerForActivityResult
-                    val csvHeader = "City,StopName,StopAddress,Note\n"
+                    val csvHeader = "City,StopName,StopAddress,Stop City,Stop State,Note\n"
                     val csvRows = cities.flatMap { city ->
                         city.stops.map { stop ->
-                            "${city.name},${stop.name},${stop.address},${stop.note}"
+                            listOf(city.name, stop.name, stop.address, stop.stopCity, stop.stopState, stop.note).joinToString(",") { csvField(it) }
                         }
                     }
                     val csvContent = buildString {
@@ -179,7 +226,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Simple CSV parser for quoted fields
+    // Simple CSV parser for quoted fields, handles "" as an escaped literal quote
     private fun parseCsvLine(line: String): List<String> {
         val result = mutableListOf<String>()
         var current = StringBuilder()
@@ -188,19 +235,32 @@ class MainActivity : ComponentActivity() {
         while (i < line.length) {
             val c = line[i]
             when {
+                c == '"' && inQuotes && i + 1 < line.length && line[i + 1] == '"' -> {
+                    current.append('"')
+                    i++
+                }
                 c == '"' -> {
                     inQuotes = !inQuotes
                 }
                 c == ',' && !inQuotes -> {
-                    result.add(current.toString().trim('"'))
+                    result.add(current.toString())
                     current = StringBuilder()
                 }
                 else -> current.append(c)
             }
             i++
         }
-        result.add(current.toString().trim('"'))
+        result.add(current.toString())
         return result
+    }
+
+    // Quotes a CSV field only when needed, escaping embedded quotes by doubling them
+    private fun csvField(field: String): String {
+        return if (field.any { it == ',' || it == '"' || it == '\n' || it == '\r' }) {
+            "\"" + field.replace("\"", "\"\"") + "\""
+        } else {
+            field
+        }
     }
 }
 
@@ -377,13 +437,19 @@ fun StopsScreen(
     var editingStopIndex by remember { mutableStateOf(-1) }
     var newStopName by remember { mutableStateOf("") }
     var newStopAddress by remember { mutableStateOf("") }
+    var newStopCity by remember { mutableStateOf("") }
+    var newStopState by remember { mutableStateOf("") }
     var newStopNote by remember { mutableStateOf("") }
     var editStopName by remember { mutableStateOf("") }
     var editStopAddress by remember { mutableStateOf("") }
+    var editStopCity by remember { mutableStateOf("") }
+    var editStopState by remember { mutableStateOf("") }
     var editStopNote by remember { mutableStateOf("") }
     val filteredStops = stops.filter {
         it.name.contains(searchQuery, ignoreCase = true) ||
         it.address.contains(searchQuery, ignoreCase = true) ||
+        it.stopCity.contains(searchQuery, ignoreCase = true) ||
+        it.stopState.contains(searchQuery, ignoreCase = true) ||
         it.note.contains(searchQuery, ignoreCase = true)
     }
     Scaffold(
@@ -437,7 +503,8 @@ fun StopsScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                            .padding(vertical = 4.dp)
+                            .clickable { navigateToStop(context, stop) },
                         shape = MaterialTheme.shapes.medium,
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
@@ -448,6 +515,10 @@ fun StopsScreen(
                         ) {
                             Text(stop.name, style = MaterialTheme.typography.bodyLarge)
                             Text(stop.address, style = MaterialTheme.typography.bodySmall)
+                            val cityState = listOf(stop.stopCity, stop.stopState).filter { it.isNotBlank() }.joinToString(", ")
+                            if (cityState.isNotBlank()) {
+                                Text(cityState, style = MaterialTheme.typography.bodySmall)
+                            }
                             if (stop.note.isNotBlank()) {
                                 Text(stop.note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.secondary)
                             }
@@ -458,12 +529,7 @@ fun StopsScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 OutlinedButton(
-                                    onClick = {
-                                        val gmmIntentUri = Uri.parse("google.navigation:q=" + Uri.encode(stop.address))
-                                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                                        mapIntent.setPackage("com.google.android.apps.maps")
-                                        context.startActivity(mapIntent)
-                                    },
+                                    onClick = { navigateToStop(context, stop) },
                                     shape = MaterialTheme.shapes.small
                                 ) {
                                     Text("Navigate")
@@ -479,6 +545,8 @@ fun StopsScreen(
                                                 editingStopIndex = stopIndex
                                                 editStopName = stop.name
                                                 editStopAddress = stop.address
+                                                editStopCity = stop.stopCity
+                                                editStopState = stop.stopState
                                                 editStopNote = stop.note
                                                 showEditDialog = true
                                             }
@@ -533,6 +601,18 @@ fun StopsScreen(
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
+                                value = editStopCity,
+                                onValueChange = { editStopCity = it },
+                                label = { Text("Stop City") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = editStopState,
+                                onValueChange = { editStopState = it },
+                                label = { Text("Stop State (e.g. ND 58201)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
                                 value = editStopNote,
                                 onValueChange = { editStopNote = it },
                                 label = { Text("Notes") },
@@ -544,7 +624,7 @@ fun StopsScreen(
                         TextButton(onClick = {
                             if (editingStopIndex >= 0 && editStopName.isNotBlank() && editStopAddress.isNotBlank()) {
                                 val updatedStops = stops.toMutableList()
-                                updatedStops[editingStopIndex] = Stop(editStopName, editStopAddress, editStopNote)
+                                updatedStops[editingStopIndex] = Stop(editStopName, editStopAddress, editStopCity, editStopState, editStopNote)
                                 stops = updatedStops
                                 if (cityIndex >= 0) {
                                     val updatedCities = cities.toMutableList()
@@ -584,6 +664,18 @@ fun StopsScreen(
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
+                                value = newStopCity,
+                                onValueChange = { newStopCity = it },
+                                label = { Text("Stop City") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
+                                value = newStopState,
+                                onValueChange = { newStopState = it },
+                                label = { Text("Stop State (e.g. ND 58201)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            OutlinedTextField(
                                 value = newStopNote,
                                 onValueChange = { newStopNote = it },
                                 label = { Text("Notes") },
@@ -594,7 +686,7 @@ fun StopsScreen(
                     confirmButton = {
                         TextButton(onClick = {
                             if (newStopName.isNotBlank() && newStopAddress.isNotBlank()) {
-                                val newStop = Stop(newStopName, newStopAddress, newStopNote)
+                                val newStop = Stop(newStopName, newStopAddress, newStopCity, newStopState, newStopNote)
                                 stops = (stops + newStop).toMutableList()
                                 // Update global state
                                 if (cityIndex >= 0) {
@@ -605,6 +697,8 @@ fun StopsScreen(
                                 }
                                 newStopName = ""
                                 newStopAddress = ""
+                                newStopCity = ""
+                                newStopState = ""
                                 newStopNote = ""
                                 showAddDialog = false
                             }
@@ -621,10 +715,10 @@ fun StopsScreen(
 
 fun sampleCities(): List<City> = listOf(
     City("Grand Forks, ND", listOf(
-        Stop("Stop 1", "123 Main St, Grand Forks, ND", "Sample note for Stop 1"),
-        Stop("Stop 2", "456 Oak Ave, Grand Forks, ND", "Sample note for Stop 2")
+        Stop("Stop 1", "123 Main St", "Grand Forks", "ND 58201", "Sample note for Stop 1"),
+        Stop("Stop 2", "456 Oak Ave", "Grand Forks", "ND 58201", "Sample note for Stop 2")
     )),
     City("Fargo, ND", listOf(
-        Stop("Stop 1", "789 Pine St, Fargo, ND", "Sample note for Fargo Stop 1")
+        Stop("Stop 1", "789 Pine St", "Fargo", "ND 58102", "Sample note for Fargo Stop 1")
     ))
 )
