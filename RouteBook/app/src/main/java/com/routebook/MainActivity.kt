@@ -592,30 +592,35 @@ fun StopsScreen(
                                 value = editStopName,
                                 onValueChange = { editStopName = it },
                                 label = { Text("Stop Name") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = editStopAddress,
                                 onValueChange = { editStopAddress = it },
                                 label = { Text("Stop Address") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = editStopCity,
                                 onValueChange = { editStopCity = it },
                                 label = { Text("Stop City") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = editStopState,
                                 onValueChange = { editStopState = it },
                                 label = { Text("Stop State (e.g. ND 58201)") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Sentences),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = editStopNote,
                                 onValueChange = { editStopNote = it },
                                 label = { Text("Notes") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Sentences),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -655,30 +660,35 @@ fun StopsScreen(
                                 value = newStopName,
                                 onValueChange = { newStopName = it },
                                 label = { Text("Stop Name") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = newStopAddress,
                                 onValueChange = { newStopAddress = it },
                                 label = { Text("Stop Address") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = newStopCity,
                                 onValueChange = { newStopCity = it },
                                 label = { Text("Stop City") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Words),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = newStopState,
                                 onValueChange = { newStopState = it },
                                 label = { Text("Stop State (e.g. ND 58201)") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Sentences),
                                 modifier = Modifier.fillMaxWidth()
                             )
                             OutlinedTextField(
                                 value = newStopNote,
                                 onValueChange = { newStopNote = it },
                                 label = { Text("Notes") },
+                                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.Sentences),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
